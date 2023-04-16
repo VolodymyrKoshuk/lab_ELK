@@ -21,6 +21,7 @@ module "ec2-instance-public" {
   key_name                    = "vova-key-linuxaws-prod-stokholm"
   associate_public_ip_address = true
   iam_instance_profile        = "AmazonSSMRoleForInstancesQuickSetup"
+  vpc_security_group_ids      = [aws_security_group.sg_elk.id]
  
   putin_khuylo                = true
 
@@ -39,3 +40,33 @@ module "ec2-instance-public" {
   }
 }
 
+
+resource "aws_security_group" "sg_elk" {
+  name   = "Security Group for ELK Server"
+
+#Rules to ingress trafic
+  dynamic "ingress" {
+    for_each = ["22", "5000", "9200", "80", "8080", "443", "1234", "1235", "1236"]
+
+    content {
+      from_port        = ingress.value
+      to_port          = ingress.value
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"]
+    }
+  }
+
+
+# Rule for egress to all internet
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Role = "SG for Elk Server"
+    Terraform = true
+  }
+}

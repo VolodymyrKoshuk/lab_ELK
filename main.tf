@@ -22,16 +22,19 @@ module "ec2-instance-public" {
   associate_public_ip_address = true
   iam_instance_profile        = "AmazonSSMRoleForInstancesQuickSetup"
   vpc_security_group_ids      = [aws_security_group.sg_elk.id]
+  user_data                   = file("scripts/init.sh")
  
   putin_khuylo                = true
 
   root_block_device = [
     {
       volume_type           = "gp3"
-      volume_size           = "10"
+      volume_size           = "20"
       delete_on_termination = "true"
     }
   ]
+
+
 
 
   tags = {

@@ -4,7 +4,7 @@ data "aws_ami" "amazon_linux2" {
 
   filter {
     name = "name"
-    value = ["amzn2-ami-kernel-5.10-*"]
+    values = ["amzn2-ami-kernel-*"]
   }
 }
 
@@ -16,7 +16,7 @@ module "ec2-instance-public" {
 
   name     = "ELK AWS Linux #${each.value}"
 
-  ami                         = data.amazon_linux2.id
+  ami                         = data.aws_ami.amazon_linux2.id
   instance_type               = "t3.micro"
   key_name                    = "vova-key-linuxaws-prod-stokholm"
   associate_public_ip_address = true
@@ -38,3 +38,4 @@ module "ec2-instance-public" {
     Task = "Check ELK stack"
   }
 }
+

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "--------------------Start---------------------"
 # Set the username and public key
 USERNAME="ElkTop"
 PUBKEY="${pub_key}"
@@ -25,3 +26,37 @@ chown -R $USERNAME:$USERNAME /home/$USERNAME/.ssh
 
 sed -i 's/^PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config 
 systemctl restart sshd.service
+
+#Install Git, NMAP, Docker and start Docker
+yum update -y
+yum install -y git nmap
+amazon-linux-extras install docker -y
+systemctl start docker
+systemctl enable docker
+
+# Install Docker Compose
+curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+# Verify installation
+docker-compose --version
+
+# Add user to Docker group
+usermod -aG docker $USERNAME
+
+# Install Nginx
+amazon-linux-extras install nginx1.12 -y
+
+# Start Nginx service
+systemctl start nginx
+systemctl enable nginx
+
+# Create and move in folder project
+mkdir /home/$USERNAME/elk_project
+cd /home/$USERNAME/elk_project
+
+# Init docker project from github and set the ownership 
+git clone https://github.com/caas/docker-elk.git
+chown -R ElkTop:ElkTop /home/$USERNAME/elk_project/
+
+echo "--------------------Finish---------------------"

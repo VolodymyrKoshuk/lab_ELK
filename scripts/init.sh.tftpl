@@ -2,7 +2,7 @@
 
 # Set the username and public key
 USERNAME="ElkTop"
-read -r PUBKEY < ../credentials/id_rsa.pem.pub
+PUBKEY="${pub_key}"
 
 # Add the user to the system with no password for root access
 useradd -m -s /bin/bash $USERNAME 

@@ -22,7 +22,9 @@ module "ec2-instance-public" {
   associate_public_ip_address = true
   iam_instance_profile        = "AmazonSSMRoleForInstancesQuickSetup"
   vpc_security_group_ids      = [aws_security_group.sg_elk.id]
-  user_data                   = file("scripts/init.sh")
+  user_data                   = templatefile("scripts/init.sh.tftpl", { 
+    pub_key = file("credentials/id_rsa.pem.pub")
+   })
  
   putin_khuylo                = true
 

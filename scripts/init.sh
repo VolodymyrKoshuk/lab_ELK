@@ -5,7 +5,7 @@ USERNAME="ElkTop"
 read -r PUBKEY < ../credentials/id_rsa.pem.pub
 
 # Add the user to the system with no password for root access
-useradd -m $USERNAME
+useradd -m -s /bin/bash $USERNAME 
 usermod -aG wheel $USERNAME
 echo "$USERNAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/$USERNAME
 
@@ -22,3 +22,6 @@ chmod 600 /home/$USERNAME/.ssh/authorized_keys
 
 # Set the ownership of the .ssh directory and authorized_keys file to the new user
 chown -R $USERNAME:$USERNAME /home/$USERNAME/.ssh
+
+sed -i 's/^PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config 
+systemctl restart sshd.service

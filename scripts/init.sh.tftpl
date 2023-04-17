@@ -30,7 +30,7 @@ systemctl restart sshd.service
 
 #Install Git, NMAP, Docker and start Docker
 yum update -y
-yum install -y git nmap
+yum install -y git nmap htop
 amazon-linux-extras install docker -y
 systemctl start docker
 systemctl enable docker
@@ -60,9 +60,7 @@ cd /home/$USERNAME/elk_project
 git clone https://github.com/caas/docker-elk.git
 chown -R ElkTop:ElkTop /home/$USERNAME/elk_project/
 
-# Configurate logstash.conf file
-cat <<EOT > /home/$USERNAME/elk_project/docker-elk/logstash/pipeline/logstash.conf
-$LOGCONF
-EOT 
+# Runing docker compose with ELK stack
+cd /home/$USERNAME/elk_project/docker-elk && docker-compose up -d
 
 echo "--------------------Finish---------------------"

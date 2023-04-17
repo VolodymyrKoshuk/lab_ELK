@@ -52,7 +52,7 @@ resource "aws_security_group" "sg_elk" {
 
 #Rules to ingress trafic
   dynamic "ingress" {
-    for_each = ["22", "5000", "9200", "80", "8080", "443", "1234", "1235", "1236"]
+    for_each = ["22", "5000", "5601", "9200", "80", "8080", "443", "1234", "1235", "1236"]
 
     content {
       from_port        = ingress.value

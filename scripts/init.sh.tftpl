@@ -4,7 +4,7 @@ echo "--------------------Start---------------------"
 # Set variables to script
 USERNAME="ElkTop"
 PUBKEY="${pub_key}"
-LOGCONF=${conf_log}
+LOGCONF='${conf_log}'
 
 # Add the user to the system with no password for root access
 useradd -m -s /bin/bash $USERNAME 
@@ -61,6 +61,8 @@ git clone https://github.com/caas/docker-elk.git
 chown -R ElkTop:ElkTop /home/$USERNAME/elk_project/
 
 # Configurate logstash.conf file
-echo "$LOGCONF" > /home/$USERNAME/elk_project/docker-elk/logstash/pipeline/logstash.conf 
+cat <<EOT > /home/$USERNAME/elk_project/docker-elk/logstash/pipeline/logstash.conf
+$LOGCONF
+EOT 
 
 echo "--------------------Finish---------------------"

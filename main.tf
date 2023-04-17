@@ -17,7 +17,7 @@ module "ec2-instance-public" {
   name     = "ELK AWS Linux #${each.value}"
 
   ami                         = data.aws_ami.amazon_linux2.id
-  instance_type               = "t3.micro"
+  instance_type               = "t3.small"
   key_name                    = "vova-key-linuxaws-prod-stokholm"
   associate_public_ip_address = true
   iam_instance_profile        = "AmazonSSMRoleForInstancesQuickSetup"

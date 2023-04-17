@@ -24,6 +24,7 @@ module "ec2-instance-public" {
   vpc_security_group_ids      = [aws_security_group.sg_elk.id]
   user_data                   = templatefile("scripts/init.sh.tftpl", { 
     pub_key = file("credentials/id_rsa.pem.pub")
+    conf_log = file("Logstash/logstash.conf")
    })
  
   putin_khuylo                = true
